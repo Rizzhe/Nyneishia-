@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For My Dear Friend</title>
+    <title>For Nyneishia </title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -23,6 +23,7 @@
             border-radius: 20px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             max-width: 600px;
+            position: relative;
         }
 
         h1 {
@@ -73,15 +74,44 @@
             background-color: #d01d6d;
             transform: scale(1.05);
         }
+
+        /* Style for the music control */
+        .music-control {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .music-control:hover {
+            background: rgba(255, 255, 255, 1);
+        }
     </style>
 </head>
 <body>
+    <!-- The Audio Element -->
+    <audio id="bgMusic" loop>
+        <!-- Replace THIS URL with your own music file -->
+        <source src="PUBLIC - Make You Mine (Put Your Hand in Mine) [Official Video].mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+
     <div class="container">
+        <!-- Music On/Off Button -->
+        <div class="music-control" onclick="toggleMute()">🔇</div>
+
         <h1>I'm So Sorry</h1>
         
         <div class="hearts">❤️ ❤️ ❤️</div>
         
-        <p>Hey [Friend's Name],</p>
+        <p>Hey Miss Bhatnagar🎀 ,</p>
         
         <p>I know I messed up and I hurt you. There's no excuse for that, and I feel terrible about it.</p>
         
@@ -100,9 +130,37 @@
     </div>
 
     <script>
+        // Get the audio element
+        const bgMusic = document.getElementById('bgMusic');
+        
+        // Function to toggle mute
+        function toggleMute() {
+            bgMusic.muted = !bgMusic.muted;
+            // Update the button icon
+            document.querySelector('.music-control').textContent = bgMusic.muted ? '🔇' : '🔊';
+        }
+
+        // Function for the forgive button
         function showMessage() {
             document.getElementById('hiddenMessage').style.display = 'block';
         }
+
+        // Try to play the music automatically when the page loads
+        window.addEventListener('DOMContentLoaded', (event) => {
+            // Note: Many browsers require user interaction before playing audio automatically.
+            // This will often not work without a user click first.
+            const playPromise = bgMusic.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    // Auto-play was prevented. We'll mute and start it, then let the user unmute.
+                    console.log("Autoplay prevented. Starting muted.");
+                    bgMusic.muted = true;
+                    bgMusic.play();
+                    document.querySelector('.music-control').textContent = '🔇';
+                });
+            }
+        });
     </script>
 </body>
 </html>
